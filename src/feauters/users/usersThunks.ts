@@ -27,3 +27,15 @@ export const addUser = createAsyncThunk<User, User, { rejectValue: string }>(
     }
   }
 )
+
+export const changeUser = createAsyncThunk<User, User, { rejectValue: string }>(
+  'users/changeUser',
+  async (changedUser, {rejectWithValue}) => {
+    try {
+      const response = await axiosApi.put('/' + changedUser.id, changedUser);
+      return response.data;
+    } catch (e) {
+      return rejectWithValue(e instanceof Error ? e.message : 'Unknown error');
+    }
+  }
+)

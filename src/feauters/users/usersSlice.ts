@@ -3,6 +3,7 @@ import { addUser, getUsers } from './usersThunks.ts';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store.ts';
 import users from '../../components/Users.tsx';
+import { UserFormValues } from '../../components/UserModal/UserModal.tsx';
 
 interface UsersState {
   users: User[],
@@ -19,6 +20,12 @@ const initialState: UsersState = {
 const addUserToState = (state: UsersState, user: User) => {
   state.users.push(user);
 };
+
+const editUserToState = (state: UsersState, changedUser: UserFormValues) => {
+  state.users.map(user =>
+    user.id === changedUser.id ? changedUser : user
+  );
+}
 
 const usersSlice = createSlice({
   name: 'usersSlice',

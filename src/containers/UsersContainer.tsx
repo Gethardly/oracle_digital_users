@@ -1,17 +1,39 @@
 import { Box, Button, Grid2, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks.ts';
 import { useEffect, useState } from 'react';
-import { getUsers } from '../feauters/users/usersThunks.ts';
+import { addUser, changeUser, getUsers } from '../feauters/users/usersThunks.ts';
 import { selectUsers, selectUsersFetching } from '../feauters/users/usersSlice.ts';
 import Loader from '../components/Loader/Loader.tsx';
 import Users from '../components/Users.tsx';
-import UserModal from '../components/UserModal/UserModal.tsx';
+import UserModal, { UserFormValues } from '../components/UserModal/UserModal.tsx';
+import { SubmitHandler } from 'react-hook-form';
+import { User } from '../types/User.ts';
 
 const UsersContainer = () => {
   const dispatch = useAppDispatch();
   const users = useAppSelector(selectUsers);
   const fetching = useAppSelector(selectUsersFetching);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isModalOpen, setModal] = useState(false);
+
+  const onSubmit: SubmitHandler<UserFormValues> = (data) => {
+    dispatch(addUser(data));
+    if (!fetching) {
+      setModal(false);
+    }
+  }
+
+  const editingUserSet = (changingUser: User) => {
+    setEditingUser(changingUser);
+    setModal(true);
+  }
+
+  const editUserOnSubmit = (changedUser: User) => {
+    dispatch(changeUser(changedUser));
+    if (!fetching) {
+      setModal(false);
+    }
+  }
 
   useEffect(() => {
     dispatch(getUsers());
@@ -19,11 +41,16 @@ const UsersContainer = () => {
   return (
     <Grid2>
       {fetching && <Loader/>}
-      <Box component='div' sx={{mb: '20px', display: 'flex', justifyContent: 'flex-end'}}>
-        <Button variant='contained' onClick={() => setModal(true)}>Add user</Button>
+      <Box component="div" sx={{mb: '20px', display: 'flex', justifyContent: 'flex-end'}}>
+        <Button variant="contained" onClick={() => setModal(true)}>Add user</Button>
       </Box>
-      {users.length > 0 ? <Users users={users}/> : <Typography variant='h1' component='h1'>Нет данных</Typography>}
-      <UserModal open={isModalOpen} handleClose={() => setModal(false)}/>
+      {users.length > 0 ?
+        <Users users={users} setEditingUser={editingUserSet}/>
+        : <Typography variant="h1" component="h1">Нет данных</Typography>}
+      <UserModal open={isModalOpen}
+                 handleClose={() => setModal(false)}
+                 onSubmit={editingUser ? editUserOnSubmit : onSubmit}
+                 editingUser={editingUser}/>
     </Grid2>
   );
 };
