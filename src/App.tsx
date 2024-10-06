@@ -1,8 +1,12 @@
+import Layout from './containers/Layout/Layout.tsx';
+import UsersContainer from './containers/UsersContainer.tsx';
+
 const App = () => {
+
   return (
-    <div>
-      Success test task
-    </div>
+    <Layout>
+      <UsersContainer/>
+    </Layout>
   );
 };
 

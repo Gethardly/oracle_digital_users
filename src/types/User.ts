@@ -1,6 +1,6 @@
 type UserStatus = 'active' | 'inactive' | 'banned' | 'guest';
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
