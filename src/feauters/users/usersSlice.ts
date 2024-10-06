@@ -16,12 +16,16 @@ const initialState: UsersState = {
   error: null,
 }
 
+const addUserToState = (state: UsersState, user: User) => {
+  state.users.push(user);
+};
+
 const usersSlice = createSlice({
   name: 'usersSlice',
   initialState,
   reducers: {
     addUserInState: (state, {payload}) => {
-      state.users.push(payload);
+      addUserToState(state, payload)
     }
   },
   extraReducers: (builder) => {
@@ -44,7 +48,8 @@ const usersSlice = createSlice({
         state.fetching = true;
         state.error = null;
       })
-      .addCase(addUser.fulfilled, (state) => {
+      .addCase(addUser.fulfilled, (state, {payload}) => {
+        addUserToState(state, payload)
         state.fetching = false;
         state.error = null;
       })

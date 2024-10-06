@@ -19,7 +19,7 @@ const Layout: FC<Props> = ({children}) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
-      <AppToolBar/>
+      <AppToolBar isDarkMode={isDarkMode}/>
       <Box component="main">
         <Container>{children}</Container>
       </Box>
