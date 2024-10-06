@@ -1,6 +1,8 @@
+type UserStatus = 'active' | 'inactive' | 'banned' | 'guest';
+
 interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
-
+  status: UserStatus;
 }
