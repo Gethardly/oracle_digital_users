@@ -16,10 +16,15 @@ const UsersContainer = () => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isModalOpen, setModal] = useState(false);
 
+  const handleModalClose = () => {
+    setEditingUser(null);
+    setModal(false);
+  }
+
   const onSubmit: SubmitHandler<UserFormValues> = (data) => {
     dispatch(addUser(data));
     if (!fetching) {
-      setModal(false);
+      handleModalClose();
     }
   }
 
@@ -31,7 +36,7 @@ const UsersContainer = () => {
   const editUserOnSubmit = (changedUser: User) => {
     dispatch(changeUser(changedUser));
     if (!fetching) {
-      setModal(false);
+      handleModalClose();
     }
   }
 
@@ -48,7 +53,7 @@ const UsersContainer = () => {
         <Users users={users} setEditingUser={editingUserSet}/>
         : <Typography variant="h1" component="h1">Нет данных</Typography>}
       <UserModal open={isModalOpen}
-                 handleClose={() => setModal(false)}
+                 handleClose={handleModalClose}
                  onSubmit={editingUser ? editUserOnSubmit : onSubmit}
                  editingUser={editingUser}/>
     </Grid2>

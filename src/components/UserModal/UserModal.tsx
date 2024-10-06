@@ -31,7 +31,7 @@ interface Props {
   editingUser?: User | null;
 }
 
-interface UserFormValues {
+export interface UserFormValues {
   id?: number;
   name: string;
   email: string;

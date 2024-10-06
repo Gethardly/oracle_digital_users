@@ -1,9 +1,7 @@
 import { User } from '../../types/User.ts';
-import { addUser, getUsers } from './usersThunks.ts';
+import { addUser, changeUser, getUsers } from './usersThunks.ts';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store.ts';
-import users from '../../components/Users.tsx';
-import { UserFormValues } from '../../components/UserModal/UserModal.tsx';
 
 interface UsersState {
   users: User[],
@@ -21,8 +19,8 @@ const addUserToState = (state: UsersState, user: User) => {
   state.users.push(user);
 };
 
-const editUserToState = (state: UsersState, changedUser: UserFormValues) => {
-  state.users.map(user =>
+const editUserToState = (state: UsersState, changedUser: User) => {
+  state.users = state.users.map(user =>
     user.id === changedUser.id ? changedUser : user
   );
 }
@@ -61,6 +59,21 @@ const usersSlice = createSlice({
         state.error = null;
       })
       .addCase(addUser.rejected, (state, {payload}) => {
+        state.fetching = false;
+        state.error = payload;
+      })
+
+    builder
+      .addCase(changeUser.pending, (state, {payload}) => {
+        state.fetching = true;
+        state.error = null;
+      })
+      .addCase(changeUser.fulfilled, (state, {payload}) => {
+        editUserToState(state, payload);
+        state.fetching = false;
+        state.error = null;
+      })
+      .addCase(changeUser.rejected, (state, {payload}) => {
         state.fetching = false;
         state.error = payload;
       })
