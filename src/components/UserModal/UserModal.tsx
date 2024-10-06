@@ -32,7 +32,7 @@ interface Props {
 }
 
 export interface UserFormValues {
-  id?: number;
+  id?: number | string;
   name: string;
   email: string;
   status: string;
@@ -45,7 +45,7 @@ const UserModal: FC<Props> = ({open, handleClose, onSubmit, editingUser}) => {
     if (editingUser) {
       reset(editingUser);
     } else {
-      reset({ id: undefined, name: '', email: '', status: '' });
+      reset({ id: '', name: '', email: '', status: '' });
     }
   }, [editingUser, reset]);
 
