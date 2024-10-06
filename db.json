@@ -5,6 +5,18 @@
       "name": "test",
       "email": "test@example.com",
       "status": "active"
+    },
+    {
+      "id": 2,
+      "name": "Postman",
+      "email": "postman@example.com",
+      "status": "inactive"
+    },
+    {
+      "id": 3,
+      "name": "Banned",
+      "email": "banned@example.com",
+      "status": "banned"
     }
   ]
 }
