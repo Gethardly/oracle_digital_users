@@ -38,12 +38,14 @@ export interface UserFormValues {
   status: string;
 }
 
-const UserModal: FC<Props> = ({ open, handleClose, onSubmit, editingUser }) => {
-  const { control, handleSubmit, reset } = useForm<UserFormValues>();
+const UserModal: FC<Props> = ({open, handleClose, onSubmit, editingUser}) => {
+  const {control, handleSubmit, reset} = useForm<UserFormValues>();
 
   useEffect(() => {
     if (editingUser) {
       reset(editingUser);
+    } else {
+      reset({ id: undefined, name: '', email: '', status: '' });
     }
   }, [editingUser, reset]);
 
@@ -62,7 +64,7 @@ const UserModal: FC<Props> = ({ open, handleClose, onSubmit, editingUser }) => {
           <Controller
             name="id"
             control={control}
-            render={({ field }) => (
+            render={({field}) => (
               <TextField
                 {...field}
                 required
@@ -78,7 +80,7 @@ const UserModal: FC<Props> = ({ open, handleClose, onSubmit, editingUser }) => {
           <Controller
             name="name"
             control={control}
-            render={({ field }) => (
+            render={({field}) => (
               <TextField
                 {...field}
                 required
@@ -92,7 +94,7 @@ const UserModal: FC<Props> = ({ open, handleClose, onSubmit, editingUser }) => {
           <Controller
             name="email"
             control={control}
-            render={({ field }) => (
+            render={({field}) => (
               <TextField
                 {...field}
                 required
@@ -106,7 +108,7 @@ const UserModal: FC<Props> = ({ open, handleClose, onSubmit, editingUser }) => {
           <Controller
             name="status"
             control={control}
-            render={({ field }) => (
+            render={({field}) => (
               <TextField
                 {...field}
                 select
@@ -123,7 +125,7 @@ const UserModal: FC<Props> = ({ open, handleClose, onSubmit, editingUser }) => {
           />
         </div>
 
-        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-evenly' }}>
+        <div style={{marginTop: '20px', display: 'flex', justifyContent: 'space-evenly'}}>
           <Button variant="contained" color="error" onClick={handleClose}>Cancel</Button>
           <Button variant="contained" type="submit">{editingUser ? 'Edit' : 'Create'}</Button>
         </div>
